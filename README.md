@@ -1,12 +1,15 @@
 # Spring Boot Integration with Regatta Database
 
-Welcome to the **Spring Boot Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate** or **JDBC** for data access. It provides RESTful APIs to manage customers and their purchases.
+Welcome to the **Spring Boot Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate (JPA)** or **JDBC** for data access. It provides RESTful APIs to manage customers and their purchases.
 
 ## Overview
 
 - **Purpose:** Demonstrate the integration of Spring Boot with Regatta Database.
-- **Technologies Used:** Spring Boot, Hibernate, Regatta Database, Java Faker, Lombok.
+- **Technologies Used:** Spring Boot, Hibernate (JPA), JDBC, Regatta Database, Java Faker, Lombok.
 - **Functionality:** Manage customers and their purchases, including creating, reading, updating, and deleting records.
+- **Two Modes:**
+  - **JPA Mode:** Located in the `jpa_app` directory.
+  - **JDBC Mode:** Located in the `jdbc_app` directory.
 
 ## Data Models
 
@@ -18,6 +21,7 @@ This application works with two primary entities:
 There is a **foreign key relationship** between them, where each **Purchase** is associated with a **Customer**.
 
 ## Prerequisites
+
 Before getting started, ensure you have the following:
 
 1. **Java Development Kit (JDK) 17 or higher**
@@ -49,17 +53,9 @@ To connect your Spring Boot application to the Regatta Database, first set up a 
 
 ### 2. Add Dependencies
 
-#### a. Obtain Regatta JAR Packages
+#### a. JPA Mode Dependencies
 
-1. **Contact Regatta Team:**
-   - Request access to the **Regatta JDBC** and **Regatta Hibernate** JAR packages.
-
-2. **Include in Project:**
-   - Once received, place the JAR files in your project's `libs` directory or a suitable location.
-
-#### b. Update `pom.xml`
-
-Add the Regatta JARs as dependencies in your `pom.xml`:
+Add the Regatta JARs as dependencies in your `pom.xml` for JPA mode:
 
 ```xml
 <dependencies>
@@ -79,11 +75,26 @@ Add the Regatta JARs as dependencies in your `pom.xml`:
 </dependencies>
 ```
 
-### **3. Configure JPA**
+#### b. JDBC Mode Dependencies
 
-**a. Update `application.properties`**
+Add only the JDBC dependency for the JDBC mode:
 
-Located in `src/main/resources/`, update the `application.properties` file with your cluster credentials:
+```xml
+<dependencies>
+    <!-- Regatta JDBC Driver -->
+    <dependency>
+        <groupId>dev.regatta</groupId>
+        <artifactId>regatta-jdbc</artifactId>
+        <version>1.3.7</version>
+    </dependency>
+</dependencies>
+```
+
+### **3. Configure Application**
+
+#### a. JPA Mode Configuration
+
+Update the `application.properties` file in the `jpa_app` directory:
 
 ```properties
 # Database Configuration
@@ -98,9 +109,7 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=dev.regatta.hibernate.RegattaDialect
 ```
 
-**b. Important: `hibernate.cfg.xml` File is Mandatory**
-
-Ensure that the `hibernate.cfg.xml` file in `src/main/resources/` is correctly set up. **Even when working with Spring Boot**, this file is **mandatory**. Insert your cluster credentials in the `hibernate.cfg.xml` file, **even if they are also present in the `application.properties`**.
+Additionally, ensure the `hibernate.cfg.xml` file is properly set up:
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -109,24 +118,32 @@ Ensure that the `hibernate.cfg.xml` file in `src/main/resources/` is correctly s
           "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <!-- Database connection settings -->
         <property name="connection.driver_class">dev.regatta.jdbc.Driver</property>
         <property name="connection.url">jdbc:regatta:<CLUSTER_IP>:<CLUSTER_PORT></property>
         <property name="connection.username"><YOUR_USERNAME></property>
         <property name="connection.password"><YOUR_PASSWORD></property>
-
-        <!-- SQL dialect -->
         <property name="dialect">dev.regatta.hibernate.RegattaDialect</property>
     </session-factory>
 </hibernate-configuration>
 ```
 
-> **⚠️ Note:** The `hibernate.cfg.xml` file must contain your database credentials and connection details. Ensure that this file is properly configured to establish a successful connection between Spring Boot and the Regatta Database.
+#### b. JDBC Mode Configuration
 
+Update the `application.properties` file in the `jdbc_app` directory:
+
+```properties
+# Database Configuration
+spring.datasource.url=jdbc:regatta:<CLUSTER_IP>:<CLUSTER_PORT>
+spring.datasource.username=<YOUR_USERNAME>
+spring.datasource.password=<YOUR_PASSWORD>
+spring.datasource.driver-class-name=dev.regatta.jdbc.Driver
+```
+
+For JDBC mode, you do not need Hibernate-specific configurations such as `spring.jpa.*` properties.
 
 ### 4. Build the Application
 
-Navigate to the root directory of the project (where `pom.xml` is located) and run:
+Navigate to the root directory of the respective project (`jpa_app` or `jdbc_app`) and run:
 
 ```bash
 mvn clean install
@@ -141,6 +158,8 @@ After a successful build, start the Spring Boot application using:
 ```bash
 mvn spring-boot:run
 ```
+
+Ensure you run the command in the appropriate directory (`jpa_app` or `jdbc_app`).
 
 ## API Endpoints
 
@@ -267,3 +286,4 @@ Customer with ID 2100000 deleted successfully.
 ---
 
 *© 2024 Regatta Team*
+
