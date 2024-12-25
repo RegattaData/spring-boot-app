@@ -16,3 +16,6 @@
 # virtual machine crash logs
 hs_err_pid*
 replay_pid*
+
+jpa_app/target/
+jdbc_app/target/

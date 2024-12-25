@@ -4,6 +4,7 @@ import dev.regatta.jpa_springboot.entity.Customer;
 import dev.regatta.jpa_springboot.entity.Purchase;
 import dev.regatta.jpa_springboot.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -43,8 +44,15 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        customerService.delete(id);
+    public ResponseEntity<String> deleteCustomer(@PathVariable Long id) {
+        boolean isDeleted = customerService.deleteCustomerById(id);
+        if (isDeleted) {
+            String message = "Customer with ID " + id + " deleted successfully.";
+            return ResponseEntity.ok(message);
+        } else {
+            String errorMessage = "Customer with ID " + id + " not found.";
+            return ResponseEntity.status(404).body(errorMessage);
+        }
     }
 
     /**
