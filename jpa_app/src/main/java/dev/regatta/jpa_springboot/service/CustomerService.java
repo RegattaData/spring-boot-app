@@ -2,7 +2,6 @@ package dev.regatta.jpa_springboot.service;
 
 import dev.regatta.jpa_springboot.entity.Customer;
 import dev.regatta.jpa_springboot.repository.CustomerRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,41 +11,30 @@ import java.util.Optional;
 @Service
 public class CustomerService {
 
-    @Autowired private CustomerRepository customerRepository;
+  @Autowired private CustomerRepository customerRepository;
 
-    public List<Customer> findAll() { return customerRepository.findAll(); }
+  public List<Customer> findAll() { return customerRepository.findAll(); }
 
-    public Optional<Customer> findOne(Long id) {
-        return customerRepository.findById(id);
+  public Optional<Customer> findOne(Long id) {
+    return customerRepository.findById(id);
     }
 
-    @Transactional
     public Customer create(Customer customer) {
         return customerRepository.save(customer);
     }
 
-    @Transactional
-    public Customer update(Long id, Customer customerDetails) {
-        Customer customer = customerRepository.findById(id).orElseThrow(
-            () -> new RuntimeException("Customer not found with id " + id));
-
-        if (customerDetails.getName() != null) {
-            customer.setName(customerDetails.getName());
-        }
-        if (customerDetails.getEmail() != null) {
-            customer.setEmail(customerDetails.getEmail());
-        }
-        if (customerDetails.getPhone() != null) {
-            customer.setPhone(customerDetails.getPhone());
-        }
-
-        return customerRepository.save(customer);
+    public List<Customer> createAll(List<Customer> customers) {
+      return customerRepository.saveAll(customers);
     }
 
-    @Transactional
-    public void delete(Long id) {
-        Customer customer = customerRepository.findById(id).orElseThrow(
-            () -> new RuntimeException("Customer not found with id " + id));
-        customerRepository.delete(customer);
+    public Customer update(Long id, Customer customer) {
+      Customer existing = customerRepository.findById(id).orElseThrow(
+          () -> new RuntimeException("Customer not found with id " + id));
+      existing.setName(customer.getName());
+      existing.setEmail(customer.getEmail());
+      existing.setPhone(customer.getPhone());
+      return customerRepository.save(existing);
     }
+
+    public void delete(Long id) { customerRepository.deleteById(id); }
 }

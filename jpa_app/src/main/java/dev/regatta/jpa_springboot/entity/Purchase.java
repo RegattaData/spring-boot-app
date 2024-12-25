@@ -7,21 +7,25 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
 @Table(name = "purchases")
+@ToString(exclude = "purchases")
 public class Purchase {
-    @Id @Column(name = "purchaseid") private Long purchaseId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customerid", nullable = false)
-    @JsonBackReference
-    private Customer customer;
+  @Id @Column(name = "purchaseid") private Long purchaseId;
 
-    @Column(length = 100) private String item;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "customerid", nullable = false)
+  @JsonBackReference
+  private Customer customer;
 
-    @Column(precision = 10, scale = 2) private BigDecimal price;
+  @Column(length = 100, nullable = false) private String item;
 
-    @Column(name = "purchasedate") private LocalDate purchaseDate;
+  @Column(precision = 10, scale = 2, nullable = false) private BigDecimal price;
+
+  @Column(name = "purchasedate", nullable = false)
+  private LocalDate purchaseDate;
 }

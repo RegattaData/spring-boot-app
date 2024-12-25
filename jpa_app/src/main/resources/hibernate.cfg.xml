@@ -1,0 +1,15 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- JDBC Database connection settings -->
+        <property name="connection.driver_class">dev.regatta.jdbc.RegDriver</property>
+        <property name="connection.url">jdbc:regatta:10.10.34.100:5010</property>
+        <property name="connection.username">admin</property>
+        <property name="connection.password">RegattaDefault1234!</property>
+
+        <!-- Select our SQL dialect -->
+        <property name="dialect">dev.regatta.hibernate.RegattaDialect</property>
+    </session-factory>
+</hibernate-configuration>
