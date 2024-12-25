@@ -186,8 +186,7 @@ curl -X GET http://localhost:8080/customers/1
       "item": "Laptop",
       "price": 999.99,
       "purchaseDate": "2024-04-15"
-    },
-    // Additional purchases...
+    }
   ]
 }
 ```
