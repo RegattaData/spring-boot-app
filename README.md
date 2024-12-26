@@ -9,7 +9,7 @@ Welcome to the **Spring Boot Regatta Integration** repository! This application 
 ## Overview
 
 - **Purpose:** Demonstrate the integration of Spring Boot with Regatta Database.
-- **Technologies Used:** Spring Boot, Hibernate (JPA), JDBC, Regatta Database, Java Faker, Lombok.
+- **Technologies Used:** Spring Boot, Hibernate (JPA), JDBC, Regatta Database.
 - **Functionality:** Manage customers and their purchases, including creating, reading, updating, and deleting records.
 - **Two Modes:**
   - **JPA Mode:** Located in the `jpa_app` directory.
