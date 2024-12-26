@@ -4,7 +4,12 @@
 
 # Spring Boot Integration with Regatta Database
 
-Welcome to the **Spring Boot Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate (JPA)** or **JDBC** for data access. It provides RESTful APIs to manage customers and their purchases.
+Welcome to the **Spring Boot / Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate (JPA)** or **JDBC** for data access. 
+It demonstrates they usage by using a sample database of a Sports Store with 2 tables:
+- *Customers* - describing all the customers
+- *Purchases* - that the customers performed
+
+It also provides RESTful APIs to manage customers and their purchases.
 
 ## Overview
 
@@ -30,10 +35,10 @@ Before getting started, ensure you have the following:
 
 1. **Java Development Kit (JDK) 17 or higher**
 2. **Maven** installed on your machine
-3. **Regatta Database Access:**
-   - Contact the Regatta team to obtain the **Regatta JDBC** and **Regatta Hibernate** JAR packages.
+3. **Regatta Platform Account:** To create and manage database cluster
+4. **Regatta Database Access:** Downloaded **Regatta JDBC** and **Regatta Hibernate** JAR packages.
 
-4. **Regatta Platform Account:** To create and manage database clusters.
+If you do not have access to the platform or the required packages, please contact Regatta Support for assistance.
 
 ## Setup Instructions
 
@@ -42,7 +47,7 @@ Before getting started, ensure you have the following:
 To connect your Spring Boot application to the Regatta Database, first set up a Regatta cluster.
 
 1. **Access Regatta Platform:**
-   - Navigate to the [Regatta Platform](https://cloud.regatta.dev/) and log in with credentials received from Regatta.
+   - Navigate to the [Regatta Platform](https://cloud.regatta.dev/) and log in with the credentials you used to register.
    Note that if the email being used is one associated with Google and you are already signed into Google, you may leverage the Single-Sign-On with the Google option.
 
 2. **Create a New Cluster:**
@@ -81,7 +86,7 @@ Add the Regatta JARs as dependencies in your `pom.xml` for JPA mode:
 
 #### b. JDBC Mode Dependencies
 
-Add only the JDBC dependency for the JDBC mode:
+Add only the JDBC dependency for JDBC mode:
 
 ```xml
 <dependencies>
@@ -174,7 +179,7 @@ curl -X POST http://localhost:8080/customers/populate
 **Response:**
 
 ```
-1000 customers with purchases have been successfully added to the database.
+1,000 customers with purchases have been successfully added to the database.
 ```
 
 ### Retrieve a Customer by ID
