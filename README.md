@@ -1,3 +1,6 @@
+<div align="center">
+  <img src="assets/banner.jpg" alt="Banner" title="Banner">
+</div>
 # Spring Boot Integration with Regatta Database
 
 Welcome to the **Spring Boot Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate (JPA)** or **JDBC** for data access. It provides RESTful APIs to manage customers and their purchases.
