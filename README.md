@@ -113,23 +113,15 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=dev.regatta.hibernate.RegattaDialect
 ```
 
-Additionally, ensure the `hibernate.cfg.xml` file is properly set up:
+**Regatta Limitation for Property Configuration:**
+When working with Spring Boot and Regatta, the cluster URL, username, and password must be explicitly specified in one of the following configuration files:
 
-```xml
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE hibernate-configuration PUBLIC
-          "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-          "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-<hibernate-configuration>
-    <session-factory>
-        <property name="connection.driver_class">dev.regatta.jdbc.Driver</property>
-        <property name="connection.url">jdbc:regatta:<CLUSTER_IP>:<CLUSTER_PORT></property>
-        <property name="connection.username"><YOUR_USERNAME></property>
-        <property name="connection.password"><YOUR_PASSWORD></property>
-        <property name="dialect">dev.regatta.hibernate.RegattaDialect</property>
-    </session-factory>
-</hibernate-configuration>
-```
+- `application.properties`
+- `application.yaml`
+- `application.yml`
+- `hibernate.cfg.xml`
+
+**Important:** These properties cannot be stored in profile-specific configuration files (e.g., `application-dev.properties`). Ensure they are added directly to the main configuration files for correct functionality.
 
 #### b. JDBC Mode Configuration
 
