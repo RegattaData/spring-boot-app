@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/banner.png" alt="Banner" title="Banner" style="width:75%;">
+  <img src="assets/SpringBoot+Regatta.png" alt="Banner" title="Banner" style="width:75%;">
 </div>
 
 # Spring Boot Integration with Regatta Database
