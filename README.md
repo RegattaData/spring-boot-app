@@ -5,11 +5,11 @@
 # Spring Boot Integration with Regatta Database
 
 Welcome to the **Spring Boot / Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate (JPA)** or **JDBC** for data access. 
-It demonstrates they usage by using a sample database of a Sports Store with 2 tables:
-- *Customers* - describing all the customers
-- *Purchases* - that the customers performed
+In this example app we simulate a Sports store with 2 tables:
+- *Customers*
+- *Purchases* 
 
-It also provides RESTful APIs to manage customers and their purchases.
+The app provdies RESTful APIs to manage customers and their purchases.
 
 ## Overview
 
@@ -27,7 +27,7 @@ This application works with two primary entities:
 1. **Customer**
 2. **Purchase**
 
-There is a **foreign key relationship** between them, where each **Purchase** is associated with a **Customer**.
+There is a **foreign key relationship** between the entities, where each **Purchase** is associated with a **Customer**.
 
 ## Prerequisites
 
@@ -35,30 +35,25 @@ Before getting started, ensure you have the following:
 
 1. **Java Development Kit (JDK) 17 or higher**
 2. **Maven** installed on your machine
-3. **Regatta Platform Account:** To create and manage database cluster
-4. **Regatta Database Access:** Downloaded **Regatta JDBC** and **Regatta Hibernate** JAR packages.
+3. **Regatta Platform Account:** To create and manage your cluster
+4. **Regatta JDBC** and **Regatta Hibernate** JAR packages
 
-If you do not have access to the platform or the required packages, please contact Regatta Support for assistance.
+If you do not have access to the Regatta Platform or required drivers, please contact Regatta Support for assistance.
 
 ## Setup Instructions
 
 ### 1. Create a Regatta Cluster
-
-To connect your Spring Boot application to the Regatta Database, first set up a Regatta cluster.
-
-1. **Access Regatta Platform:**
-   - Navigate to the [Regatta Platform](https://cloud.regatta.dev/) and log in with the credentials you used to register.
-   Note that if the email being used is one associated with Google and you are already signed into Google, you may leverage the Single-Sign-On with the Google option.
-
+1. **Log in to the [Regatta Platform](https://cloud.regatta.dev/).**
+   - Use your credentials or Google SSO if applicable.
 2. **Create a New Cluster:**
-   - Click on the "**+ CREATE NEW CLUSTER**" button.
-   - **Configure Cluster:**
-     - **Cluster Name:** Enter a meaningful name for your cluster.
-     - **Cluster Type:** Select the appropriate type based on your needs.
-   - Click "**Confirm**" to initiate cluster creation.
+   - Click "**+ CREATE NEW CLUSTER**".
+   - Configure the cluster:
+     - **Cluster Name:** Enter a meaningful name.
+     - **Cluster Type:** Select the appropriate type.
+   - Click "**Confirm**".
+3. **Wait for the Cluster to Start Running.**
 
-3. **Wait for Cluster to Run:**
-   - Monitor the cluster status. Wait until it changes from "**Starting**" to "**Running**".
+**Note:** If you are using on-premises deployment, you can skip this step.
 
 ### 2. Add Dependencies
 
@@ -126,7 +121,7 @@ When working with Spring Boot and Regatta, the cluster URL, username, and passwo
 - `application.yml`
 - `hibernate.cfg.xml`
 
-**Important:** These properties cannot be stored in profile-specific configuration files (e.g., `application-dev.properties`). Ensure they are added directly to the main configuration files for correct functionality.
+**Important:** These properties cannot be stored in profile-specific configuration files (e.g., `application-dev.properties`). Ensure they are added directly to the main configuration files.
 
 #### b. JDBC Mode Configuration
 
