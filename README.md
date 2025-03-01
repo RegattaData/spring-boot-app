@@ -43,10 +43,10 @@ If you do not have access to the Regatta Platform or required drivers, please co
 ## Setup Instructions
 
 ### 1. Create a Regatta Cluster
-1. **Log in to the [Regatta Platform](https://cloud.regatta.dev/).**
+1. **Log in to the [Regatta Cloud](https://cloud.regatta.dev/).**
    - Use your credentials or Google SSO if applicable.
 2. **Create a New Cluster:**
-   - Click "**+ CREATE NEW CLUSTER**".
+   - Click "**CREATE NEW CLUSTER**".
    - Configure the cluster:
      - **Cluster Name:** Enter a meaningful name.
      - **Cluster Type:** Select the appropriate type.
@@ -67,14 +67,14 @@ Add the Regatta JARs as dependencies in your `pom.xml` for JPA mode:
     <dependency>
         <groupId>dev.regatta</groupId>
         <artifactId>regatta-jdbc</artifactId>
-        <version>1.3.7</version>
+        <version>1.4.0</version>
     </dependency>
 
     <!-- Regatta Hibernate Integration -->
     <dependency>
         <groupId>dev.regatta</groupId>
         <artifactId>regatta-hibernate</artifactId>
-        <version>1.0.0</version>
+        <version>1.1.0</version>
     </dependency>
 </dependencies>
 ```
@@ -89,7 +89,7 @@ Add only the JDBC dependency for JDBC mode:
     <dependency>
         <groupId>dev.regatta</groupId>
         <artifactId>regatta-jdbc</artifactId>
-        <version>1.3.7</version>
+        <version>1.4.0</version>
     </dependency>
 </dependencies>
 ```
@@ -105,7 +105,7 @@ Update the `application.properties` file in the `jpa_app` directory:
 spring.datasource.url=jdbc:regatta:<CLUSTER_IP>:<CLUSTER_PORT>
 spring.datasource.username=<YOUR_USERNAME>
 spring.datasource.password=<YOUR_PASSWORD>
-spring.datasource.driver-class-name=dev.regatta.jdbc.Driver
+spring.datasource.driver-class-name=dev.regatta.jdbc1.Driver
 
 # Hibernate Configuration
 spring.jpa.hibernate.ddl-auto=update
@@ -132,7 +132,7 @@ Update the `application.properties` file in the `jdbc_app` directory:
 spring.datasource.url=jdbc:regatta:<CLUSTER_IP>:<CLUSTER_PORT>
 spring.datasource.username=<YOUR_USERNAME>
 spring.datasource.password=<YOUR_PASSWORD>
-spring.datasource.driver-class-name=dev.regatta.jdbc.Driver
+spring.datasource.driver-class-name=dev.regatta.jdbc1.Driver
 ```
 
 For JDBC mode, you do not need Hibernate-specific configurations such as `spring.jpa.*` properties.
@@ -281,5 +281,5 @@ Customer with ID 2100000 deleted successfully.
 
 ---
 
-*© 2024 Regatta Team*
+*© 2025 Regatta Team*
 
