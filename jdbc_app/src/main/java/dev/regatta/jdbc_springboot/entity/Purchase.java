@@ -10,6 +10,17 @@ public class Purchase {
     private String item;
     private BigDecimal price;
     private LocalDate purchaseDate;
+     // Default constructor
+    public Purchase() {
+    }
+    // Constructor with all fields
+    public Purchase(Long purchaseId, Long customerId, String item, BigDecimal price, LocalDate purchaseDate) {
+        this.purchaseId = purchaseId;
+        this.customerId = customerId;
+        this.item = item;
+        this.price = price;
+        this.purchaseDate = purchaseDate;
+    }
 
     // Getters and Setters
 

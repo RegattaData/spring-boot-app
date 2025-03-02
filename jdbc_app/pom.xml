@@ -36,7 +36,7 @@
     <dependency>
         <groupId>dev.regatta</groupId>
         <artifactId>regatta-jdbc</artifactId>
-        <version>1.3.7</version>
+        <version>1.4.0</version>
     </dependency>
     <dependency>
         <groupId>com.github.javafaker</groupId>
