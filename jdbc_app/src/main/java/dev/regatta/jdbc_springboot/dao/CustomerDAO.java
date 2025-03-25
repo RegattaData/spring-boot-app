@@ -1,11 +1,14 @@
 package dev.regatta.jdbc_springboot.dao;
 
 import dev.regatta.jdbc_springboot.entity.Customer;
+import dev.regatta.jdbc_springboot.entity.Purchase;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +20,10 @@ public class CustomerDAO {
 
     // Constructor
     public CustomerDAO(@Value("${spring.datasource.url}") String jdbcURL,
-                       @Value("${spring.datasource.username}") String jdbcUsername,
-                       @Value("${spring.datasource.password}") String jdbcPassword) {
+                       @Value("${spring.datasource.username}")
+                       String jdbcUsername,
+                       @Value("${spring.datasource.password}")
+                       String jdbcPassword) {
         this.jdbcURL = jdbcURL;
         this.jdbcUsername = jdbcUsername;
         this.jdbcPassword = jdbcPassword;
@@ -26,8 +31,10 @@ public class CustomerDAO {
 
     // Insert a new customer
     public boolean insertCustomer(Customer customer) throws SQLException {
-        String sql = "INSERT INTO customers (customerid, name, email, phone) VALUES (?, ?, ?, ?)";
-        try (Connection connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        String sql =
+                "INSERT INTO customers (customerid, name, email, phone) VALUES (?, ?, ?, ?)";
+        try (Connection connection = DriverManager.getConnection(jdbcURL,
+                jdbcUsername, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, customer.getCustomerId());
@@ -40,17 +47,20 @@ public class CustomerDAO {
     }
 
     // Bulk Insert Customers
-    public boolean bulkInsertCustomers(List<Customer> customers) throws SQLException {
-        StringBuilder sql = new StringBuilder("INSERT INTO customers (customerid, name, email, phone) VALUES ");
+    public boolean bulkInsertCustomers(List<Customer> customers)
+            throws SQLException {
+        StringBuilder sql = new StringBuilder(
+                "INSERT INTO customers (customerid, name, email, phone) VALUES ");
         int count = 0;
 
         for (Customer customer : customers) {
-            sql.append("(")
-               .append(customer.getCustomerId()).append(", ")
-               .append("'").append(customer.getName().replace("'", "''")).append("', ")
-               .append("'").append(customer.getEmail().replace("'", "''")).append("', ")
-               .append("'").append(customer.getPhone().replace("'", "''")).append("')")
-               .append(", ");
+            sql.append("(").append(customer.getCustomerId()).append(", ")
+                    .append("'").append(customer.getName().replace("'", "''"))
+                    .append("', ").append("'")
+                    .append(customer.getEmail().replace("'", "''"))
+                    .append("', ").append("'")
+                    .append(customer.getPhone().replace("'", "''")).append("')")
+                    .append(", ");
             count++;
         }
 
@@ -61,13 +71,15 @@ public class CustomerDAO {
         }
 
         // Execute the bulk insert
-        try (Connection connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        try (Connection connection = DriverManager.getConnection(jdbcURL,
+                jdbcUsername, jdbcPassword);
              Statement statement = connection.createStatement()) {
 
             int rowsInserted = statement.executeUpdate(sql.toString());
             return rowsInserted == count;
         } catch (SQLException e) {
-            throw new RuntimeException("Failed to execute bulk insert for customers", e);
+            throw new RuntimeException(
+                    "Failed to execute bulk insert for customers", e);
         }
     }
 
@@ -76,7 +88,8 @@ public class CustomerDAO {
         String sql = "SELECT * FROM customers";
         List<Customer> listCustomer = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        try (Connection connection = DriverManager.getConnection(jdbcURL,
+                jdbcUsername, jdbcPassword);
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(sql)) {
 
@@ -95,9 +108,11 @@ public class CustomerDAO {
 
     // Update a customer
     public boolean updateCustomer(Customer customer) throws SQLException {
-        String sql = "UPDATE customers SET name = ?, email = ?, phone = ? WHERE customerid = ?";
+        String sql =
+                "UPDATE customers SET name = ?, email = ?, phone = ? WHERE customerid = ?";
 
-        try (Connection connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        try (Connection connection = DriverManager.getConnection(jdbcURL,
+                jdbcUsername, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, customer.getName());
@@ -113,7 +128,8 @@ public class CustomerDAO {
     public boolean deleteCustomer(Long customerId) throws SQLException {
         String sql = "DELETE FROM customers WHERE customerid = ?";
 
-        try (Connection connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
+        try (Connection connection = DriverManager.getConnection(jdbcURL,
+                jdbcUsername, jdbcPassword);
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setLong(1, customerId);
@@ -124,22 +140,52 @@ public class CustomerDAO {
 
     // Get a customer by ID
     public Customer getCustomer(Long customerId) throws SQLException {
-        String sql = "SELECT * FROM customers WHERE customerid = ?";
+        String sqlCustomer = "SELECT * FROM customers WHERE customerid = ?";
+        String sqlPurchases = "SELECT * FROM purchases WHERE customerid = ?";
+
         Customer customer = null;
 
-        try (Connection connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (Connection connection = DriverManager.getConnection(jdbcURL,
+                jdbcUsername, jdbcPassword);
+             PreparedStatement customerStatement = connection.prepareStatement(
+                     sqlCustomer);
+             PreparedStatement purchaseStatement = connection.prepareStatement(
+                     sqlPurchases)) {
 
-            statement.setLong(1, customerId);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    String name = resultSet.getString("name");
-                    String email = resultSet.getString("email");
-                    String phone = resultSet.getString("phone");
+            // Fetch customer
+            customerStatement.setLong(1, customerId);
+            try (ResultSet customerResultSet = customerStatement.executeQuery()) {
+                if (customerResultSet.next()) {
+                    String name = customerResultSet.getString("name");
+                    String email = customerResultSet.getString("email");
+                    String phone = customerResultSet.getString("phone");
 
                     customer = new Customer(customerId, name, email, phone);
                 }
+            }
+
+            // If customer exists, fetch purchases
+            if (customer != null) {
+                List<Purchase> purchases = new ArrayList<>();
+                purchaseStatement.setLong(1, customerId);
+                try (ResultSet purchaseResultSet = purchaseStatement.executeQuery()) {
+                    while (purchaseResultSet.next()) {
+                        Long purchaseId =
+                                purchaseResultSet.getLong("purchaseid");
+                        String item = purchaseResultSet.getString("item");
+                        BigDecimal price =
+                                purchaseResultSet.getBigDecimal("price");
+                        LocalDate purchaseDate =
+                                purchaseResultSet.getDate("purchasedate")
+                                        .toLocalDate();
+
+                        Purchase purchase =
+                                new Purchase(purchaseId, customerId, item,
+                                        price, purchaseDate);
+                        purchases.add(purchase);
+                    }
+                }
+                customer.setPurchases(purchases);
             }
         }
 
