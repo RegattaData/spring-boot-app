@@ -4,10 +4,10 @@
 
 # Spring Boot Integration with Regatta Database
 
-Welcome to the **Spring Boot / Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate (JPA)** or **JDBC** for data access. 
+Welcome to the **Spring Boot / Regatta Integration** repository! This application demonstrates how to integrate a Spring Boot backend with the Regatta Database using **Hibernate (JPA)** or **JDBC** for data access.
 In this example app we simulate a Sports store with 2 tables:
 - *Customers*
-- *Purchases* 
+- *Purchases*
 
 The app provdies RESTful APIs to manage customers and their purchases.
 
@@ -56,6 +56,17 @@ If you do not have access to the Regatta Platform or required drivers, please co
 **Note:** If you are using on-premises deployment, you can skip this step.
 
 ### 2. Add Dependencies
+If you're using the standalone shaded driver, make sure Regatta native client
+libraries are already available in your system path. The following command
+installs the full shaded JDBC driver locally:
+```shell
+mvn install:install-file \
+  -Dfile=/path/to/drivers/regatta-jdbc-1.5.0-shaded_full.jar \
+  -DgroupId=dev.regatta \
+  -DartifactId=jdbc1 \
+  -Dversion=1.5.0 \
+  -Dpackaging=jar
+```
 
 #### a. JPA Mode Dependencies
 
@@ -67,7 +78,7 @@ Add the Regatta JARs as dependencies in your `pom.xml` for JPA mode:
     <dependency>
         <groupId>dev.regatta</groupId>
         <artifactId>regatta-jdbc</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
     </dependency>
 
     <!-- Regatta Hibernate Integration -->
@@ -89,7 +100,7 @@ Add only the JDBC dependency for JDBC mode:
     <dependency>
         <groupId>dev.regatta</groupId>
         <artifactId>regatta-jdbc</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
     </dependency>
 </dependencies>
 ```
